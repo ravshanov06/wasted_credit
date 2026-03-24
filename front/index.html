@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Simple Waste Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@700&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <style>
+        /* Removes the default arrows from the number input for a cleaner look */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { "gofun": "#fef9ef", "shu": "#911500", "sumi": "#1d1c16" },
+            fontFamily: { "serif": ["Noto Serif", "serif"], "sans": ["Public Sans", "sans-serif"] }
+          }
+        }
+      }
+    </script>
+</head>
+
+<body class="bg-gofun min-h-screen flex items-center justify-center p-4 antialiased">
+    <main class="w-full max-w-md bg-white p-10 shadow-xl border-t-8 border-shu ring-1 ring-black/5 transition-shadow duration-500 hover:shadow-2xl">
+        <header class="mb-10 text-center">
+            <h2 class="font-serif text-3xl font-bold text-sumi tracking-tight">Qancha pulni bekorga sarfladingiz</h2>
+        </header>
+
+        <div class="space-y-8">
+            <div class="group">
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3 text-center group-focus-within:text-shu transition-colors">
+                    Nechchi para o'qiganingizni kiriting
+                </label>
+                <input id="total-lessons" type="number" placeholder="0" 
+                       class="w-full text-center text-7xl font-serif border-none focus:ring-0 text-sumi placeholder:opacity-5 transition-all focus:placeholder-transparent">
+            </div>
+
+            <button onclick="calculate()" 
+                    class="w-full bg-shu py-5 text-white font-serif font-bold text-xl hover:bg-sumi active:scale-[0.98] transition-all duration-200 shadow-lg shadow-shu/10">
+                Hisoblash
+            </button>
+
+            <div id="results" class="hidden mt-8 text-center border-t pt-8 border-gray-100 fade-in">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400">Qancha isrof qilganingiz</span>
+                <div id="total-uzs" class="text-5xl font-serif font-bold text-shu my-3 tracking-tighter">0 UZS</div>
+                <p class="text-[11px] italic text-gray-400 mt-4 leading-relaxed">Shuncha pul osmonga uchib ketdiya</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function calculate() {
+            const lessons = parseInt(document.getElementById('total-lessons').value) || 0;
+            const costPerLesson = 59722;
+            const total = lessons * costPerLesson;
+
+            const display = document.getElementById('total-uzs');
+            const container = document.getElementById('results');
+
+            // Formats using thin spaces for a premium currency feel
+            display.innerText = Math.round(total).toLocaleString('fr-FR').replace(/\s/g, ' ') + " UZS";
+            
+            container.classList.remove('hidden');
+            // Re-trigger animation if button is clicked again
+            container.classList.remove('fade-in');
+            void container.offsetWidth; 
+            container.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
